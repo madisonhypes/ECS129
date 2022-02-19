@@ -1,22 +1,7 @@
 import os
+from tracemalloc import start
 
 os.chdir(r'C:\Users\Madison Hypes\Desktop\FOLDER\Code\ECS129Project')
-
-# Created by arorakashish0911 on geekforgeeks.org tutorials
-# https: // www.geeksforgeeks.org/dna-protein-python-3/
-
-# Python program to convert
-# altered DNA to protein
-
-# inputfile = open("DNAfastaExample.txt", "r")
-# f = inputfile
-# seq = f.read()
-# seq = seq.replace("\n", "")
-# seq = seq.replace("\r", "")
-# f.close()
-# print(seq)
-
-# Function created by Madison Hypes
 
 
 def readFasta():
@@ -34,8 +19,75 @@ def readFasta():
     return seq
 
 
-seq = readFasta()
-print(seq)
+def dnaPol(seq):
+    table = {"A": "T", "T": "A", "G": "C", "C": "G"}
+    reverseComp = ""
+    for i in range(0, len(seq), 1):
+        bp = seq[i]
+        reverseComp += table[bp]
+    reverseComp = ''.join(reversed(reverseComp))
+    return reverseComp
+
+
+def rnaPol():
+    frame1 = ""
+    frame2 = ""
+    frame3 = ""
+    for i in range(0, len(seq), 3):
+        codon = seq[i:i + 3]
+        if codon == "ATG":
+            start = i
+            for i in range(start, len(seq), 3):
+                codon = seq[i:i + 3]
+                if codon == "TAA":
+                    break
+                elif codon == "TGA":
+                    break
+                elif codon == "TAG":
+                    break
+                else:
+                    frame1 += codon
+    print("frame 1")
+    print(frame1)
+    for i in range(1, len(seq), 3):
+        codon = seq[i:i + 3]
+        if codon == "ATG":
+            start = i
+            for i in range(start, len(seq), 3):
+                codon = seq[i:i + 3]
+                if codon == "TAA":
+                    break
+                elif codon == "TGA":
+                    break
+                elif codon == "TAG":
+                    break
+                else:
+                    frame2 += codon
+    print("frame 2")
+    print(frame2)
+    for i in range(2, len(seq), 3):
+        codon = seq[i:i + 3]
+        if codon == "ATG":
+            start = i
+            for i in range(start, len(seq), 3):
+                codon = seq[i:i + 3]
+                if codon == "TAA":
+                    break
+                elif codon == "TGA":
+                    break
+                elif codon == "TAG":
+                    break
+                else:
+                    frame3 += codon
+    print("frame 3")
+    print(frame3)
+    frameList = [frame1, frame2, frame3]
+    numberList = [len(frame1), len(frame2), len(frame3)]
+    print(numberList)
+    maxValue = max(numberList)
+    maxIndex = numberList.index(maxValue)
+    gene = frameList[maxIndex]
+    return(gene)
 
 
 def translate(seq):
@@ -66,12 +118,15 @@ def translate(seq):
     return protein
 
 
-def read_seq(inputfile):
-    with open(inputfile, "r") as f:
-        seq = f.read()
-    seq = seq.replace("\n", "")
-    seq = seq.replace("\r", "")
-    return seq
+seq = readFasta()
+print(seq)
+reverseComp = dnaPol(seq)
+print(reverseComp)
+gene = rnaPol()
+print(gene)
+protein = translate(gene)
+print(protein)
+# print(reverseComp)
 
 
 # prt = read_seq("amino_acid_sequence_original.txt")
